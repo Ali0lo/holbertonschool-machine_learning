@@ -5,10 +5,12 @@
 def fill(df):
     """Modify the DataFrame by dropping and filling specific columns.
 
-    - Removes the Weighted_Price column.
-    - Fills missing Close values with the previous row's Close (forward fill).
-    - Fills missing Open/High/Low values with the Close value from the same row.
-    - Sets missing Volume_(BTC) and Volume_(Currency) values to 0.
+    Removes the Weighted_Price column.
+
+    Fills missing values:
+    - Close: with previous row's value.
+    - High, Low, Open: with the corresponding Close in the same row.
+    - Volume_(BTC), Volume_(Currency): with 0.
 
     Args:
         df: pandas DataFrame.
