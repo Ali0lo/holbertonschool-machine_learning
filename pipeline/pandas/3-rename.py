@@ -5,13 +5,14 @@ import pandas as pd
 
 
 def rename(df):
-    """Renames Timestamp column to Datetime, converts to datetime, and filters.
+    """Rename Timestamp to Datetime, convert to datetime, and filter columns.
 
     Args:
-        df (pd.DataFrame): DataFrame containing 'Timestamp' and 'Close' columns.
+        df (pd.DataFrame): DataFrame containing 'Timestamp' and 'Close'
+            columns.
 
     Returns:
-        pd.DataFrame: Modified DataFrame with only 'Datetime' and 'Close'.
+        pd.DataFrame: DataFrame with only 'Datetime' and 'Close'.
     """
     df = df.rename(columns={"Timestamp": "Datetime"})
     df["Datetime"] = pd.to_datetime(df["Datetime"], unit="s")
