@@ -23,6 +23,11 @@ def poly_integral(poly, C=0):
     # Calculate the integral of each term in the polynomial
     for power, coef in enumerate(poly):
         if coef != 0:  # Skip zero coefficients as they don't affect the integral
-            result.append(coef / (power + 1))
+            integral_coef = coef / (power + 1)
+            # Convert whole number floats to integers
+            if integral_coef.is_integer():
+                result.append(int(integral_coef))
+            else:
+                result.append(integral_coef)
     
     return result
