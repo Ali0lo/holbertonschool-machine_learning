@@ -16,6 +16,10 @@ def poly_integral(poly, C=0):
     # Input validation
     if not isinstance(poly, list) or not all(isinstance(coef, (int, float)) for coef in poly) or not isinstance(C, (int, float)):
         return None
+
+    # If the polynomial is a constant zero, return [0]
+    if poly == [0]:
+        return [0]
     
     # Initialize result with the constant of integration
     result = [C]
@@ -24,7 +28,7 @@ def poly_integral(poly, C=0):
     for power, coef in enumerate(poly):
         if coef != 0:  # Skip zero coefficients as they don't affect the integral
             integral_coef = coef / (power + 1)
-            # Add integral coefficient to the result list
+            # Convert whole number floats to integers
             if integral_coef.is_integer():
                 result.append(int(integral_coef))
             else:
