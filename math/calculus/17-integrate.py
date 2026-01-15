@@ -24,10 +24,13 @@ def poly_integral(poly, C=0):
     for power, coef in enumerate(poly):
         if coef != 0:  # Skip zero coefficients as they don't affect the integral
             integral_coef = coef / (power + 1)
-            # Convert whole number floats to integers
+            # Add integral coefficient to the result list
             if integral_coef.is_integer():
                 result.append(int(integral_coef))
             else:
                 result.append(integral_coef)
+        else:
+            # Ensure missing powers (zeros) are included explicitly in the list
+            result.append(0)
     
     return result
