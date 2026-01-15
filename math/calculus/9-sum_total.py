@@ -1,4 +1,10 @@
 #!/usr/bin/env python3
+
+"""
+This module contains a function to calculate the sum of squares of integers
+from 1 to n. It uses a direct mathematical formula to compute the result.
+"""
+
 def summation_i_squared(n):
     """
     This function computes the sum of squares of integers from 1 to n.
