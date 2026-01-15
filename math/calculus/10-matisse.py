@@ -1,31 +1,52 @@
 #!/usr/bin/env python3
+"""Module for polynomial derivative"""
+
 
 def poly_derivative(poly):
     """
-    This function calculates the derivative of a polynomial represented
-    by a list of coefficients.
+    Calculates the derivative of a polynomial.
 
-    Arguments:
-    poly -- A list of coefficients representing a polynomial
+    Args:
+        poly: list of coefficients representing a polynomial
+              index represents the power of x
 
     Returns:
-    A list of coefficients representing the derivative of the polynomial,
-    or None if the input is invalid.
+        New list of coefficients representing the derivative,
+        or None if input is invalid
     """
-    if not isinstance(poly, list) or len(poly) == 0 or not all(
-        isinstance(coef, int) for coef in poly
-    ):
+    # Validate input
+    if not isinstance(poly, list) or len(poly) == 0:
         return None
 
-    # Calculate the derivative using the power rule
-    derivative = []
-    for power, coef in enumerate(poly):
-        if power == 0:
-            continue  # The derivative of the constant term (x^0) is 0
-        derivative.append(coef * power)
+    # Check all elements in poly are numbers
+    for coef in poly:
+        if not isinstance(coef, (int, float)):
+            return None
 
-    # If the derivative is an empty list, return [0] (this happens when it's a constant polynomial)
-    if not derivative:
+    # Special case: constant polynomial (only one coefficient)
+    if len(poly) == 1:
+        return [0]
+
+    # Calculate derivative
+    # For each coefficient at index i (representing x^i),
+    # the derivative is i * coef * x^(i-1)
+    derivative = []
+
+    for i in range(1, len(poly)):
+        new_coef = poly[i] * i
+
+        # Convert to integer if it's a whole number
+        if new_coef == int(new_coef):
+            new_coef = int(new_coef)
+
+        derivative.append(new_coef)
+
+    # Remove trailing zeros to make list as small as possible
+    while len(derivative) > 1 and derivative[-1] == 0:
+        derivative.pop()
+
+    # If all coefficients are 0, return [0]
+    if len(derivative) == 0 or all(c == 0 for c in derivative):
         return [0]
 
     return derivative
