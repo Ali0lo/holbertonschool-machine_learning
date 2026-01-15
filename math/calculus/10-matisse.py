@@ -16,16 +16,16 @@ def poly_derivative(poly):
         isinstance(coef, int) for coef in poly
     ):
         return None
-    
+
     # Calculate the derivative using the power rule
     derivative = []
     for power, coef in enumerate(poly):
         if power == 0:
             continue  # The derivative of the constant term (x^0) is 0
         derivative.append(coef * power)
-    
+
     # If the derivative is an empty list, return [0] (this happens when it's a constant polynomial)
     if not derivative:
         return [0]
-    
+
     return derivative
