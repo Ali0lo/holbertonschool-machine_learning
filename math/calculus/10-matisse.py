@@ -12,7 +12,9 @@ def poly_derivative(poly):
     A list of coefficients representing the derivative of the polynomial,
     or None if the input is invalid.
     """
-    if not isinstance(poly, list) or len(poly) == 0 or not all(isinstance(coef, int) for coef in poly):
+    if not isinstance(poly, list) or len(poly) == 0 or not all(
+        isinstance(coef, int) for coef in poly
+    ):
         return None
     
     # Calculate the derivative using the power rule
