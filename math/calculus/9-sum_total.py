@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 def summation_i_squared(n):
     """
     This function computes the sum of squares of integers from 1 to n.
