@@ -1,0 +1,28 @@
+#!/usr/bin/env python3
+
+def poly_integral(poly, C=0):
+    """
+    This function calculates the integral of a polynomial represented
+    by a list of coefficients.
+
+    Arguments:
+    poly -- A list of coefficients representing a polynomial
+    C -- The constant of integration (default is 0)
+
+    Returns:
+    A list of coefficients representing the integral of the polynomial,
+    or None if the input is invalid.
+    """
+    # Input validation
+    if not isinstance(poly, list) or not all(isinstance(coef, (int, float)) for coef in poly) or not isinstance(C, (int, float)):
+        return None
+    
+    # Initialize result with the constant of integration
+    result = [C]
+    
+    # Calculate the integral of each term in the polynomial
+    for power, coef in enumerate(poly):
+        if coef != 0:  # Skip zero coefficients as they don't affect the integral
+            result.append(coef / (power + 1))
+    
+    return result
