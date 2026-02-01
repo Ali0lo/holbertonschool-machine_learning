@@ -4,10 +4,10 @@
 
 def matrix_transpose(matrix):
     """Returns the transpose of a 2D matrix
-    
+
     Args:
         matrix: A 2D matrix (list of lists)
-    
+
     Returns:
         A new matrix that is the transpose of the input matrix
     """
