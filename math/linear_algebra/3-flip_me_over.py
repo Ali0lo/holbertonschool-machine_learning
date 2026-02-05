@@ -1,14 +1,8 @@
 #!/usr/bin/env python3
-"""Module to transpose a 2D matrix"""
+"""Module for matrix operations"""
 
 
 def matrix_transpose(matrix):
-    """Returns the transpose of a 2D matrix
-
-    Args:
-        matrix: A 2D matrix (list of lists)
-
-    Returns:
-        A new matrix that is the transpose of the input matrix
-    """
-    return [[row[i] for row in matrix] for i in range(len(matrix[0]))]
+    """Returns the transpose of a 2D matrix"""
+    return [[matrix[row][col] for row in range(len(matrix))]
+            for col in range(len(matrix[0]))]
