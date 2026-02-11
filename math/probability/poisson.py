@@ -8,7 +8,7 @@ class Poisson:
     def __init__(self, data=None, lambtha=1.):
         """
         Initialize Poisson distribution
-        
+
         Args:
             data: list of data to estimate distribution
             lambtha: expected number of occurrences in given time frame
