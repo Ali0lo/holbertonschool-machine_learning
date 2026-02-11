@@ -80,3 +80,19 @@ class Poisson:
             if abs(term) < 1e-16:
                 break
         return result
+    def pmf(self, k):
+        """Calculates the value of the PMF for a given number of successes
+        Args:
+            k: number of successes
+        Returns:
+            PMF value for k, or 0 if k is out of range
+        """
+        if not isinstance(k, int):
+            k = int(k)
+        if k < 0:
+            return 0
+        import math
+        e = math.e
+        factorial = math.factorial(k)
+        numerator = (e ** (-self.lambtha)) * (self.lambtha ** k)
+        return numerator / factorial
