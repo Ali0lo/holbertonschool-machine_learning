@@ -43,8 +43,8 @@ class Poisson:
         for i in range(1, k + 1):
             factorial *= i
 
-        # e constant
-        e = 2.7182818284590452354
+        # e constant with higher precision
+        e = 2.7182818284590452353602874713527
 
         # PMF formula: (e^(-lambtha) * lambtha^k) / k!
         pmf_value = (e ** (-self.lambtha) * self.lambtha ** k) / factorial
