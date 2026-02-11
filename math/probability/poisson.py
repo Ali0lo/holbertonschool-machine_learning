@@ -62,3 +62,21 @@ class Poisson:
             if abs(term) < 1e-15:
                 break
         return result
+
+    def cdf(self, k):
+        """
+        Calculates the value of the CDF for a given number of successes
+        Args:
+            k: number of successes
+        Returns:
+            CDF value for k, or 0 if k is out of range
+        """
+        if not isinstance(k, int):
+            k = int(k)
+        if k < 0:
+            return 0
+
+        cdf_value = 0
+        for i in range(k + 1):
+            cdf_value += self.pmf(i)
+        return cdf_value
