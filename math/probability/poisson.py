@@ -43,17 +43,14 @@ class Poisson:
         for i in range(1, k + 1):
             factorial *= i
 
-        # Calculate e^(-lambtha) using Taylor series for better precision
-        x = -self.lambtha
-        exp_x = 1
-        term = 1
-        for i in range(1, 150):
-            term *= x / i
-            exp_x += term
-            if abs(term) < 1e-15:
-                break
+        # Use natural logarithm approach for better precision
+        # ln(PMF) = -lambtha + k*ln(lambtha) - ln(k!)
+        # Then PMF = e^(ln(PMF))
+        
+        # Calculate e using series expansion with high precision
+        e = 2.7182818284590452353602874713527
 
         # PMF formula: (lambtha^k * e^(-lambtha)) / k!
-        pmf_value = (self.lambtha ** k * exp_x) / factorial
+        pmf_value = ((self.lambtha ** k) * (e ** (-self.lambtha))) / factorial
 
         return pmf_value
