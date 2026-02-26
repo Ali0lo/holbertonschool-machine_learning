@@ -5,8 +5,6 @@
 class Poisson:
     """Represents a Poisson distribution"""
 
-    e = 2.7182818284590452353602874713527
-
     def __init__(self, data=None, lambtha=1.):
         """
         Initialize Poisson distribution
@@ -37,16 +35,28 @@ class Poisson:
         if k < 0:
             return 0
 
-        # Calculate e^(-lambtha) using the constant e
-        e_neg_lambtha = self.e ** (-self.lambtha)
-
-        # Calculate lambtha^k
-        lambtha_power_k = self.lambtha ** k
-
-        # Calculate k!
+        # Calculate factorial and power together to avoid overflow
+        # and maintain precision
         factorial_k = 1
         for i in range(1, k + 1):
             factorial_k *= i
 
+        # Calculate e^(-lambtha) using Taylor series
+        e_neg_lambtha = self._calculate_e_power(-self.lambtha)
+
         # PMF = (e^(-lambtha) * lambtha^k) / k!
-        return (e_neg_lambtha * lambtha_power_k) / factorial_k
+        return (e_neg_lambtha * (self.lambtha ** k)) / factorial_k
+
+    def _calculate_e_power(self, x):
+        """
+        Calculate e^x using Taylor series expansion
+        e^x = sum(x^n / n!) for n from 0 to infinity
+        """
+        result = 1
+        term = 1
+        n = 1
+        while abs(term) > 1e-15 and n < 1000:
+            term *= x / n
+            result += term
+            n += 1
+        return result
