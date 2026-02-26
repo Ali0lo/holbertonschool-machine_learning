@@ -1,8 +1,11 @@
 #!/usr/bin/env python3
 """Module for Poisson distribution"""
 
+
 class Poisson:
     """Represents a Poisson distribution"""
+
+    e = 2.7182818284590452353602874713527
 
     def __init__(self, data=None, lambtha=1.):
         """
@@ -30,13 +33,12 @@ class Poisson:
         Returns:
             PMF value for k, or 0 if k is out of range
         """
-        if not isinstance(k, int):
-            k = int(k)
+        k = int(k)
         if k < 0:
             return 0
 
-        # Calculate e^(-lambtha)
-        e_neg_lambtha = self._e_power(-self.lambtha)
+        # Calculate e^(-lambtha) using the constant e
+        e_neg_lambtha = self.e ** (-self.lambtha)
 
         # Calculate lambtha^k
         lambtha_power_k = self.lambtha ** k
@@ -48,17 +50,3 @@ class Poisson:
 
         # PMF = (e^(-lambtha) * lambtha^k) / k!
         return (e_neg_lambtha * lambtha_power_k) / factorial_k
-
-    def _e_power(self, x):
-        """
-        Calculate e^x using Taylor series with high precision
-        e^x = 1 + x + x^2/2! + x^3/3! + ...
-        """
-        result = 1.0
-        term = 1.0
-        for i in range(1, 300):
-            term *= x / i
-            result += term
-            if abs(term) < 1e-20:
-                break
-        return result
