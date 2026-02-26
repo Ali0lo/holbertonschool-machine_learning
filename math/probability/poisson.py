@@ -49,24 +49,6 @@ class Poisson:
         # PMF = (e^(-lambtha) * lambtha^k) / k!
         return (e_neg_lambtha * lambtha_power_k) / factorial_k
 
-    def cdf(self, k):
-        """
-        Calculates the value of the CDF for a given number of successes
-        Args:
-            k: number of successes
-        Returns:
-            CDF value for k, or 0 if k is out of range
-        """
-        if not isinstance(k, int):
-            k = int(k)
-        if k < 0:
-            return 0
-
-        cdf_value = 0
-        for i in range(k + 1):
-            cdf_value += self.pmf(i)
-        return cdf_value
-
     def _e_power(self, x):
         """
         Calculate e^x using Taylor series with high precision
