@@ -35,28 +35,48 @@ class Poisson:
         if k < 0:
             return 0
 
-        # Calculate factorial and power together to avoid overflow
-        # and maintain precision
-        factorial_k = 1
-        for i in range(1, k + 1):
-            factorial_k *= i
+        # Use log space for better precision
+        # log(PMF) = -lambtha + k*log(lambtha) - log(k!)
+        log_pmf = -self.lambtha
+        
+        if k > 0:
+            log_pmf += k * self._log(self.lambtha)
+            # Subtract log(k!)
+            for i in range(1, k + 1):
+                log_pmf -= self._log(i)
+        
+        # Convert back from log space
+        return self._exp(log_pmf)
 
-        # Calculate e^(-lambtha) using Taylor series
-        e_neg_lambtha = self._calculate_e_power(-self.lambtha)
+    def _log(self, x):
+        """Calculate natural logarithm using series expansion"""
+        if x <= 0:
+            return float('-inf')
+        
+        # For x close to 1, use ln(x) = 2 * sum((z^(2n+1))/(2n+1))
+        # where z = (x-1)/(x+1)
+        z = (x - 1) / (x + 1)
+        z_squared = z * z
+        result = z
+        term = z
+        n = 1
+        
+        while abs(term) > 1e-15 and n < 1000:
+            term *= z_squared
+            result += term / (2 * n + 1)
+            n += 1
+        
+        return 2 * result
 
-        # PMF = (e^(-lambtha) * lambtha^k) / k!
-        return (e_neg_lambtha * (self.lambtha ** k)) / factorial_k
-
-    def _calculate_e_power(self, x):
-        """
-        Calculate e^x using Taylor series expansion
-        e^x = sum(x^n / n!) for n from 0 to infinity
-        """
+    def _exp(self, x):
+        """Calculate e^x using Taylor series"""
         result = 1
         term = 1
         n = 1
+        
         while abs(term) > 1e-15 and n < 1000:
             term *= x / n
             result += term
             n += 1
+        
         return result
