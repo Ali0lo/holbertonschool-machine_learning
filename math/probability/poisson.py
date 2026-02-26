@@ -56,9 +56,9 @@ class Poisson:
         """
         result = 1.0
         term = 1.0
-        for i in range(1, 200):
+        for i in range(1, 300):
             term *= x / i
             result += term
-            if abs(term) < 1e-17:
+            if abs(term) < 1e-20:
                 break
         return result
