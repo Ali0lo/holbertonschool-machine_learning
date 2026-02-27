@@ -30,24 +30,21 @@ class Normal:
             self.stddev = (stddev / len(data)) ** (1 / 2)
 
     def z_score(self, x):
-        """Calculate z score"""
+        """
+        Calculates the z-score of a given x-value
+        Args:
+            x: the x-value
+        Returns:
+            z-score of x
+        """
         return (x - self.mean) / self.stddev
 
     def x_value(self, z):
-        """Calculate x from z score"""
+        """
+        Calculates the x-value of a given z-score
+        Args:
+            z: the z-score
+        Returns:
+            x-value of z
+        """
         return z * self.stddev + self.mean
-
-    def pdf(self, x):
-        """Calculate PDF value for given x"""
-        return (1 / ((2 * 3.1415926536) ** (1 / 2) * self.stddev)
-                * 2.7182818285 ** ((-(x - self.mean) ** 2) /
-                (2 * self.stddev ** 2))
-                )
-
-    def cdf(self, x):
-        """Calculate CDF value for given x"""
-        pi = 3.1415926536
-        x = (x - self.mean) / (self.stddev * 2 ** (1 / 2))
-        erf = (x - x ** 3 / 3 + x ** 5 / 10 - x ** 7 / 42 + x ** 9 / 216)
-        erf = 2 * erf / (pi ** (1 / 2))
-        return (1 / 2) * (1 + erf)
