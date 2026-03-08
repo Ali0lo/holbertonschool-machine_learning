@@ -38,4 +38,4 @@ class Neuron():
 
     def cost(self, Y, A):
         """ Cost of the model (based on logistic reg) """
-        return np.sum(-Y * np.log(A) - (1 - Y) * np.log(1.0000001 - A))
+        return np.sum(-Y * np.log(A) - (1 - Y) * np.log(1.0000001 - A)) / A.shape[1]
