@@ -53,5 +53,5 @@ class Neuron():
         """ apply gradient descent algorithm """
         dz = A - Y
         m = dz.shape[1]
-        self.__W -= (alpha * dz @ X) / m
+        self.__W -= (alpha * dz @ X.T) / m
         self.__b -= (alpha * np.sum(dz)) / m
