@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """ This module will define a class named Neuron """
-
+import numpy as np
 
 class Neuron():
     """ Class for implementing neuron in NN """
