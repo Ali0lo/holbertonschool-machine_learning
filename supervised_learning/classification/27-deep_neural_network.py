@@ -69,7 +69,7 @@ class DeepNeuralNetwork:
     def cost(self, Y, A):
         """Calculates the cost using cross-entropy loss."""
         m = Y.shape[1]
-        cost = -1 / m * np.sum(Y * np.log(A + 1.0000001e-7))
+        cost = -1 / m * np.sum(Y * np.log(A + 1.0000001e-8))
         return cost
 
     def evaluate(self, X, Y):
