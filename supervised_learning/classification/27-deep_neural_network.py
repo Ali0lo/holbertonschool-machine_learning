@@ -58,7 +58,9 @@ class DeepNeuralNetwork:
             Z = np.dot(W, A_prev) + b
             if layer == self.__L:
                 t = np.exp(Z - np.max(Z, axis=0, keepdims=True))
-                self.__cache["A" + str(layer)] = t / np.sum(t, axis=0, keepdims=True)
+                self.__cache["A" + str(layer)] = (
+                    t / np.sum(t, axis=0, keepdims=True)
+                )
             else:
                 self.__cache["A" + str(layer)] = 1 / (1 + np.exp(-Z))
 
@@ -67,7 +69,7 @@ class DeepNeuralNetwork:
     def cost(self, Y, A):
         """Calculates the cost using cross-entropy loss."""
         m = Y.shape[1]
-        cost = -1 / m * np.sum(Y * np.log(A + 1e-8))
+        cost = -1 / m * np.sum(Y * np.log(A + 1.0000001e-7))
         return cost
 
     def evaluate(self, X, Y):
