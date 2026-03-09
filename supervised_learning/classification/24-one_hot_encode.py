@@ -5,6 +5,8 @@ import numpy as np
 
 def one_hot_encode(Y, classes):
     """ Converts a numeric label vector into a one-hot matrix """
+    if not isinstance(Y, (np.ndarray, list)):
+        return None
     try:
         Y = np.array(Y, dtype=int)  # ensure integer type
         m = Y.shape[0]
