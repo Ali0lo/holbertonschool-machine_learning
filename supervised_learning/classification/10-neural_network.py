@@ -63,9 +63,3 @@ class NeuralNetwork:
         self.__A2 = 1 / (1 + np.e**(-z2))
 
         return self.__A1, self.__A2
-
-    def forward_prop(self, X):
-        """ Function for conducting forward propagation """
-        z = self.__W @ X + self.__b
-        self.__A = 1 / (1 + np.e**(-z))
-        return self.__A
