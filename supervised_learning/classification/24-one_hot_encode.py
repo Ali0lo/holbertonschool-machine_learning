@@ -4,21 +4,20 @@ import numpy as np
 
 
 def one_hot_encode(Y, classes):
-    """ Converts a numeric label vector into a one-hot matrix """
-    if not isinstance(Y, (np.ndarray, list)):
-        return None
+    """Converts numeric labels to one-hot encoding (shape: classes x m)."""
+    
+    # check type first
+    if not isinstance(Y, np.ndarray):
+        return None  # return None immediately if Y is not a numpy.ndarray
+
     try:
-        Y = np.array(Y, dtype=int)  # ensure integer type
+        Y = Y.astype(int)
         m = Y.shape[0]
         if m == 0 or classes <= 0:
             return None
 
-        # Initialize the one-hot matrix with zeros
         one_hot = np.zeros((classes, m))
-
-        # Set the corresponding element to 1 for each example
         one_hot[Y, np.arange(m)] = 1
-
         return one_hot
 
     except Exception:
