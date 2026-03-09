@@ -3,6 +3,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 
+
 class Neuron():
     """ Class for implementing neuron in NN """
     def __init__(self, nx):
