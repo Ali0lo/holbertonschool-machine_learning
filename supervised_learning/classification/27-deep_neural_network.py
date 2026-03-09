@@ -67,9 +67,10 @@ class DeepNeuralNetwork:
         return self.__cache["A" + str(self.__L)], self.__cache
 
     def cost(self, Y, A):
-        """ cost function calculate """
+        """ cost function """
         m = Y.shape[1]
-        cost = -1 / m * np.sum(Y * np.log(A + 1e-8))
+        A = np.clip(A, 1e-7, 1 - 1e-7)
+        cost = -1 / m * np.sum(Y * np.log(A))
         return cost
 
     def evaluate(self, X, Y):
