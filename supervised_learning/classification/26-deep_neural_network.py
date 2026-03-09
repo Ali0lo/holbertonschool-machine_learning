@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """ This module will define a class named DeepNeuralNetwork """
 import numpy as np
+import pickle, os
 
 
 class DeepNeuralNetwork:
