@@ -3,7 +3,7 @@
 import numpy as np
 
 
-class NueralNetwork():
+class NeuralNetwork():
     """ This class will define a neural network with one hidden layer """
     def __init__(self, nx, nodes):
         if not isinstance(nx, int):
