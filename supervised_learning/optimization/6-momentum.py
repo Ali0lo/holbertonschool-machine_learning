@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Module to create a gradient descent with momentum optimizer in TensorFlow."""
+"""Module to create a gradient descent with momentum optimizer."""
 import tensorflow as tf
 
 
