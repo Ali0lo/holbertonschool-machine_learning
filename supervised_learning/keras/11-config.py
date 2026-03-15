@@ -13,7 +13,7 @@ def save_config(network, filename):
     """
     # Get model configuration as JSON string
     config_json = network.to_json()
-    
+
     # Write JSON string to file
     with open(filename, 'w') as f:
         f.write(config_json)
