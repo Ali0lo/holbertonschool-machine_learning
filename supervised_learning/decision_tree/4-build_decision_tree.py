@@ -16,8 +16,8 @@ class Node:
         self.is_root = is_root
         self.sub_population = None
         self.depth = depth
-        self.lower = {}
-        self.upper = {}
+        self.lower = {}  # lower bounds per feature
+        self.upper = {}  # upper bounds per feature
 
     def max_depth_below(self):
         """ Function for finding depth of the tree """
@@ -41,32 +41,49 @@ class Node:
 
     def get_leaves_below(self):
         """ Return list of all leaves below this node """
-        return (
-            self.left_child.get_leaves_below() +
-            self.right_child.get_leaves_below()
-        )
+        if self.is_leaf:
+            return [self]
+
+        leaves = []
+
+        if self.left_child:
+            leaves += self.left_child.get_leaves_below()
+
+        if self.right_child:
+            leaves += self.right_child.get_leaves_below()
+
+        return leaves
 
     def update_bounds_below(self):
         """ Update bounds below function """
         if self.is_root:
+            self.lower = {0: -np.inf}
             self.upper = {0: np.inf}
-            self.lower = {0: -1 * np.inf}
 
         for child in [self.left_child, self.right_child]:
+            if child is None:
+                continue
+
+            # Copy parent bounds
             child.lower = self.lower.copy()
             child.upper = self.upper.copy()
 
-            if child is self.left_child:
-                child.upper[self.feature] = self.threshold
-            else:
-                child.lower[self.feature] = self.threshold
+            # Update bounds for the splitting feature
+            if self.feature is not None:
+                if child == self.left_child:
+                    child.lower[self.feature] = self.threshold
+                else:
+                    child.upper[self.feature] = self.threshold
 
+        # Recurse
         for child in [self.left_child, self.right_child]:
-            child.update_bounds_below()
+            if child is not None:
+                child.update_bounds_below()
 
     def __str__(self):
         """ Print node for debugging """
-        return f"Node(feature={self.feature}, threshold={self.threshold})"
+        s = f"Node(feature={self.feature}, threshold={self.threshold})"
+        return s
 
 
 class Leaf(Node):
