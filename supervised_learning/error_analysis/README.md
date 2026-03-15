@@ -1,17 +1,18 @@
-# Classification Metrics
+# Decision Tree Depth
 
-## 0. Create Confusion Matrix
-`0-create_confusion.py` contains:
+This project adds support for computing the maximum depth of a decision tree.
 
-- `create_confusion_matrix(labels, logits)`
-  - Builds a confusion matrix from one-hot true labels and one-hot predicted labels.
-  - Rows represent actual classes.
-  - Columns represent predicted classes.
+## Files
 
-## 1. Sensitivity
-`1-sensitivity.py` contains:
+- `0-build_decision_tree.py`
+  - `Node.max_depth_below(self)`: returns the maximum depth found in the
+    subtree rooted at the node.
+  - `Leaf.max_depth_below(self)`: returns the leaf depth.
+  - `Decision_Tree.depth(self)`: returns the maximum depth of the tree from
+    the root.
 
-- `sensitivity(confusion)`
-  - Computes sensitivity (recall) for each class:
-    - `TP / (TP + FN)`
+## Notes
 
+- Root depth is `0`.
+- If a node has depth `k`, its children have depth `k + 1`.
+- The maximum depth includes leaves.
