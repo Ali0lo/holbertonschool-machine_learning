@@ -39,7 +39,7 @@ class Node:
                 self.feature, self.threshold
             )
         else:
-            text = "node [feature={}, threshold={}]".format(
+            text = "-> node [feature={}, threshold={}]".format(
                 self.feature, self.threshold
             )
         text += "\n"
