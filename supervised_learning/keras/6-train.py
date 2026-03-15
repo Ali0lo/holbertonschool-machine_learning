@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Trains a Keras model using mini-batch gradient descent with validation and early stopping."""
+"""Trains Keras model with validation and early stopping."""
 
 import tensorflow.keras as K
 
