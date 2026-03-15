@@ -61,7 +61,6 @@ class Node:
         return new_text
 
     def __str__(self):
-        """ Print node """
         if self.is_root:
             label = (
                 f"root [feature={self.feature}, threshold={self.threshold}]"
@@ -72,7 +71,7 @@ class Node:
             )
         left_str = self.left_child_add_prefix(self.left_child.__str__())
         right_str = self.right_child_add_prefix(self.right_child.__str__())
-        return label + "\n" + left_str + right_str[:-1]
+        return label + "\n" + left_str + right_str
 
 
 class Leaf(Node):
@@ -127,7 +126,7 @@ class Decision_Tree():
         return self.root.count_nodes_below(only_leaves=only_leaves)
 
     def get_leaves(self):
-        """ Return leaves """
+        """ Return all leaves """
         return self.root.get_leaves_below()
 
     def __str__(self):
