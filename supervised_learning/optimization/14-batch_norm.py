@@ -15,6 +15,7 @@ def create_batch_norm_layer(prev, n, activation):
     Returns:
     - output: tensor, activated output of the layer with batch normalization
     """
+    tf.random.set_seed(0)
     # Dense layer with VarianceScaling initializer
     dense = tf.keras.layers.Dense(
         units=n,
