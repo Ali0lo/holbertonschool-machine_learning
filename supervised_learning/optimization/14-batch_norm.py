@@ -5,21 +5,32 @@ import tensorflow as tf
 
 
 def create_batch_norm_layer(prev, n, activation):
-    """Returns the activated output of a batch-normalized dense layer."""
+    """Creates a batch normalization layer for a neural network."""
     init = tf.keras.initializers.VarianceScaling(mode='fan_avg')
 
-    Z = tf.keras.layers.Dense(
+    dense = tf.keras.layers.Dense(
         units=n,
-        kernel_initializer=init,
-        use_bias=False
-    )(prev)
+        kernel_initializer=init
+    )
+    Z = dense(prev)
 
-    Z_norm = tf.keras.layers.BatchNormalization(
-        axis=-1,
-        momentum=0.99,
-        epsilon=1e-7,
-        beta_initializer='zeros',
-        gamma_initializer='ones'
-    )(Z)
+    gamma = tf.Variable(
+        initial_value=tf.ones((n,)),
+        trainable=True
+    )
+    beta = tf.Variable(
+        initial_value=tf.zeros((n,)),
+        trainable=True
+    )
 
-    return tf.keras.layers.Activation(activation)(Z_norm)
+    mean, variance = tf.nn.moments(Z, axes=[0])
+    Z_norm = tf.nn.batch_normalization(
+        Z,
+        mean,
+        variance,
+        offset=beta,
+        scale=gamma,
+        variance_epsilon=1e-7
+    )
+
+    return activation(Z_norm)
