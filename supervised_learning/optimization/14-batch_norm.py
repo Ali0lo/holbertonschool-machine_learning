@@ -20,9 +20,10 @@ def create_batch_norm_layer(prev, n, activation):
         prev = tf.convert_to_tensor(prev, dtype=tf.float32)
 
     # Dense layer with VarianceScaling initializer and no bias
+    a = 'fan_avg'
     dense = tf.keras.layers.Dense(
         units=n,
-        kernel_initializer=tf.keras.initializers.VarianceScaling(mode='fan_avg'),
+        kernel_initializer=tf.keras.initializers.VarianceScaling(mode=a),
         use_bias=False
     )(prev)
 
