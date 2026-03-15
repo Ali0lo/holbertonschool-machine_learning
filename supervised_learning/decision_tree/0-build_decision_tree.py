@@ -1,8 +1,6 @@
 #!/usr/bin/env python3
 """Decision tree classes."""
 
-import numpy as np
-
 
 class Node:
     """Node class for a decision tree."""
@@ -16,6 +14,7 @@ class Node:
         self.right_child = right_child
         self.is_root = is_root
         self.depth = depth
+        self.is_leaf = False
 
     def max_depth_below(self):
         """Returns the maximum depth in the subtree rooted at this node."""
@@ -31,6 +30,7 @@ class Leaf:
         """Class constructor."""
         self.value = value
         self.depth = depth
+        self.is_leaf = True
 
     def max_depth_below(self):
         """Returns leaf depth."""
