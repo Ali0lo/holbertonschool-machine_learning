@@ -10,7 +10,7 @@ def create_confusion_matrix(labels, logits):
     pred_classes = np.argmax(logits, axis=1)
     classes = labels.shape[1]
 
-    confusion = np.zeros((classes, classes), dtype=np.int64)
+    confusion = np.zeros((classes, classes))
     np.add.at(confusion, (true_classes, pred_classes), 1)
 
     return confusion
