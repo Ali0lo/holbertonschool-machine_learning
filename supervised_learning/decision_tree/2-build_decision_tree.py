@@ -17,32 +17,30 @@ class Node:
         self.is_leaf = False
 
     def left_child_add_prefix(self, text):
-        """Add display prefix to left subtree text."""
+        """Add prefix for left child subtree."""
         lines = text.split("\n")
         new_text = "    +--" + lines[0] + "\n"
         for x in lines[1:]:
-            new_text += ("    |  " + x) + "\n"
+            new_text += "    |  " + x + "\n"
         return new_text
 
     def right_child_add_prefix(self, text):
-        """Add display prefix to right subtree text."""
+        """Add prefix for right child subtree."""
         lines = text.split("\n")
         new_text = "    +--" + lines[0] + "\n"
         for x in lines[1:]:
-            new_text += ("       " + x) + "\n"
+            new_text += "       " + x + "\n"
         return new_text
 
     def __str__(self):
-        """Return string representation of node and its subtree."""
+        """Return string representation of node and subtree."""
         if self.is_root:
-            text = (
-                "root [feature={}, threshold={}]"
-                .format(self.feature, self.threshold)
+            text = "root [feature={}, threshold={}]".format(
+                self.feature, self.threshold
             )
         else:
-            text = (
-                "-> node [feature={}, threshold={}]"
-                .format(self.feature, self.threshold)
+            text = "node [feature={}, threshold={}]".format(
+                self.feature, self.threshold
             )
         text += "\n"
         text += self.left_child_add_prefix(str(self.left_child))
@@ -72,5 +70,5 @@ class Decision_Tree:
         self.root = root
 
     def __str__(self):
-        """Return string representation of tree."""
+        """Return string representation of the tree."""
         return self.root.__str__()
