@@ -19,11 +19,10 @@ class DeepNeuralNetwork:
             raise TypeError("layers must be a list of positive integers")
         if activation not in ('sig', 'tanh'):
             raise ValueError("activation must be 'sig' or 'tanh'")
-
+        self.__activation = activation
         self.__L = len(layers)
         self.__cache = {}
         self.__weights = {}
-        self.__activation = activation
 
         prev = nx
         for layer in range(1, self.__L + 1):
@@ -52,7 +51,7 @@ class DeepNeuralNetwork:
 
     @property
     def activation(self):
-        """Getter for activation."""
+        """Getter for activation function."""
         return self.__activation
 
     def forward_prop(self, X):
@@ -66,27 +65,31 @@ class DeepNeuralNetwork:
             Z = np.dot(W, A_prev) + b
             if layer == self.__L:
                 t = np.exp(Z - np.max(Z, axis=0, keepdims=True))
-                self.__cache["A" + str(layer)] = (
-                    t / np.sum(t, axis=0, keepdims=True)
-                )
-            elif self.__activation == 'sig':
-                self.__cache["A" + str(layer)] = 1 / (1 + np.exp(-Z))
+                self.__cache["A" + str(layer)] = t / np.sum(t,
+                                                            axis=0,
+                                                            keepdims=True)
             else:
-                self.__cache["A" + str(layer)] = np.tanh(Z)
+                if self.__activation == 'sig':
+                    self.__cache["A" + str(layer)] = 1 / (1 + np.exp(-Z))
+                else:
+                    self.__cache["A" + str(layer)] = np.tanh(Z)
 
         return self.__cache["A" + str(self.__L)], self.__cache
 
     def cost(self, Y, A):
-        """Calculates the cost using cross-entropy loss."""
+        """ cost function """
         m = Y.shape[1]
-        cost = -1 / m * np.sum(Y * np.log(A + 1e-9))
+        A = np.clip(A, 1e-7, 1 - 1e-7)
+        cost = -1 / m * np.sum(Y * np.log(A))
         return cost
 
     def evaluate(self, X, Y):
         """Evaluates the neural network predictions."""
         A, _ = self.forward_prop(X)
         cost = self.cost(Y, A)
-        prediction = np.where(A == np.max(A, axis=0, keepdims=True), 1, 0)
+        # Convert to one-hot
+        prediction = np.zeros_like(A)
+        prediction[np.argmax(A, axis=0), np.arange(A.shape[1])] = 1
         return prediction, cost
 
     def gradient_descent(self, Y, cache, alpha=0.05):
