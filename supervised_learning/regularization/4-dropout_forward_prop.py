@@ -20,15 +20,33 @@ def dropout_forward_prop(X, weights, L, keep_prob):
     """
     cache = {}
     cache['A0'] = X
-
+    
     for layer in range(1, L + 1):
         # Get previous activation
         A_prev = cache['A' + str(layer - 1)]
-
+        
         # Compute Z = W * A_prev + b
         Z = np.matmul(weights['W' + str(layer)], A_prev) + \
             weights['b' + str(layer)]
-
-        # Apply activation function
+        
         if layer == L:
             # Last layer: softmax activation
+            exp_Z = np.exp(Z)
+            A = exp_Z / np.sum(exp_Z, axis=0, keepdims=True)
+            cache['A' + str(layer)] = A
+        else:
+            # Hidden layers: tanh activation
+            A = np.tanh(Z)
+            
+            # Apply dropout
+            D = np.random.rand(A.shape[0], A.shape[1]) < keep_prob
+            D = D.astype(int)
+            
+            # Apply mask and scale (inverted dropout)
+            A = A * D
+            A = A / keep_prob
+            
+            cache['A' + str(layer)] = A
+            cache['D' + str(layer)] = D
+    
+    return cache
