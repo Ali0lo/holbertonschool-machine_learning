@@ -7,7 +7,7 @@ def convolve_grayscale_valid(images, kernel):
     """ Function that performs a valid conv on grayscale image """
     m, h, w = np.shape(images)
     kh, kw = np.shape(kernel)
-    output = np.zeros((h - kh + 1, w - kw + 1))
+    output = np.zeros((m, h - kh + 1, w - kw + 1))
     for i in range(h - kh + 1):
         for j in range(w - kw +1):
             patch = images[:, i:i+kh, j:j+kw]
