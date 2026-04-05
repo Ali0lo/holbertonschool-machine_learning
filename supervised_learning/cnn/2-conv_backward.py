@@ -39,7 +39,7 @@ def conv_backward(dZ, A_prev, W, b, padding="same", stride=(1, 1)):
     # Initialize variables with zeros
     dW = np.zeros(W.shape)
     dA_prev_pad = np.zeros((m, h_prev + 2 * ph, w_prev + 2 * pw, c_prev))
-    
+
     # Calculate db directly by summing across examples, height, and width
     db = np.sum(dZ, axis=(0, 1, 2), keepdims=True)
 
@@ -51,7 +51,7 @@ def conv_backward(dZ, A_prev, W, b, padding="same", stride=(1, 1)):
     for i in range(m):
         a_pad = A_prev_pad[i]
         da_pad = dA_prev_pad[i]
-        
+
         for h in range(h_new):
             for w in range(w_new):
                 for c in range(c_new):
@@ -65,7 +65,8 @@ def conv_backward(dZ, A_prev, W, b, padding="same", stride=(1, 1)):
                     a_slice = a_pad[v_start:v_end, h_start:h_end, :]
 
                     # Update gradients for the window and the weights
-                    da_pad[v_start:v_end, h_start:h_end, :] += W[:, :, :, c] * dZ[i, h, w, c]
+                    da_padded = da_pad[v_start:v_end, h_start:h_end, :]
+                    da_padded += W[:, :, :, c] * dZ[i, h, w, c]
                     dW[:, :, :, c] += a_slice * dZ[i, h, w, c]
 
     # Extract the unpadded dA_prev from the padded version
