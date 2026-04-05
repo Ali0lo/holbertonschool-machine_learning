@@ -32,12 +32,12 @@ def conv_forward(A_prev, W, b, activation, padding="same", stride=(1, 1)):
         w_new = (w_prev - kw) // sw + 1
 
     conv_output = np.zeros((m, h_new, w_new, c_new))
-    for example in range(m):
+    for e in range(m):
         for i in range(h_new):
             for j in range(w_new):
                 for kernel in range(c_new):
-                    A_slice = A_prev_padded[example, i*sh:i*sh+kh, j*sw:j*sw+kw, :]
-                    Z = np.sum(A_slice * W[:, :, :, kernel]) + b[0, 0, 0, kernel]
-                    conv_output[example, i, j, kernel] = Z
+                    A_s = A_prev_padded[e, i*sh:i*sh+kh, j*sw:j*sw+kw, :]
+                    Z = np.sum(A_s * W[:, :, :, kernel]) + b[0, 0, 0, kernel]
+                    conv_output[e, i, j, kernel] = Z
 
     return activation(conv_output)
