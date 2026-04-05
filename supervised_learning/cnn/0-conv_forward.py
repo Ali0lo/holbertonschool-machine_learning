@@ -4,7 +4,14 @@
 import numpy as np
 
 
-def conv_forward(A_prev, W, b, activation, padding="same", stride=(1, 1)):
+def conv_forward(
+    A_prev,
+    W,
+    b,
+    activation,
+    padding="same",
+    stride=(1, 1)
+):
     """
     Perform forward propagation over a convolutional layer.
 
@@ -12,7 +19,7 @@ def conv_forward(A_prev, W, b, activation, padding="same", stride=(1, 1)):
         A_prev (np.ndarray): shape (m, h_prev, w_prev, c_prev)
         W (np.ndarray): shape (kh, kw, c_prev, c_new)
         b (np.ndarray): shape (1, 1, 1, c_new)
-        activation (callable): activation function applied to convolution output
+        activation (callable): activation function applied to convolution
         padding (str): "same" or "valid"
         stride (tuple): (sh, sw)
 
@@ -24,7 +31,9 @@ def conv_forward(A_prev, W, b, activation, padding="same", stride=(1, 1)):
     sh, sw = stride
 
     if c_prev != c_prev_w:
-        raise ValueError("A_prev and W must have the same number of input channels")
+        raise ValueError(
+            "A_prev and W must have the same number of input channels"
+        )
 
     if padding == "same":
         ph = int(np.ceil(((h_prev - 1) * sh + kh - h_prev) / 2))
@@ -39,7 +48,7 @@ def conv_forward(A_prev, W, b, activation, padding="same", stride=(1, 1)):
         A_prev,
         pad_width=((0, 0), (ph, ph), (pw, pw), (0, 0)),
         mode="constant",
-        constant_values=0,
+        constant_values=0
     )
 
     h_new = int((h_prev + 2 * ph - kh) / sh) + 1
@@ -55,9 +64,17 @@ def conv_forward(A_prev, W, b, activation, padding="same", stride=(1, 1)):
                 horiz_start = w * sw
                 horiz_end = horiz_start + kw
 
-                a_slice = A_pad[i, vert_start:vert_end, horiz_start:horiz_end, :]
+                a_slice = A_pad[
+                    i,
+                    vert_start:vert_end,
+                    horiz_start:horiz_end,
+                    :
+                ]
 
                 for c in range(c_new):
-                    Z[i, h, w, c] = np.sum(a_slice * W[:, :, :, c]) + b[0, 0, 0, c]
+                    Z[i, h, w, c] = (
+                        np.sum(a_slice * W[:, :, :, c]) +
+                        b[0, 0, 0, c]
+                    )
 
     return activation(Z)
