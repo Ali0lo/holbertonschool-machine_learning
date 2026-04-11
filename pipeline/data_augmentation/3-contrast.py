@@ -5,4 +5,4 @@ import tensorflow as tf
 
 def rotate_image(image, lower, upper):
     """ Randomly adjust the contrast """
-    return tf.image.random_contrast(image, lower, upper)
+    return tf.image.stateless_random_contrast(image, lower, upper, (1, 1))
