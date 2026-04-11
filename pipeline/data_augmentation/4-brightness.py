@@ -3,6 +3,6 @@
 import tensorflow as tf
 
 
-def rotate_image(image, lower, upper):
-    """ Randomly adjust the brightness """
-    return tf.image.random_contrast(image, lower, upper)
+def change_brightness(image, max_delta):
+    """ Randomly change the brightness """
+    return tf.image.random_brightness(image, max_delta)
