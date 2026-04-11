@@ -4,5 +4,5 @@ import tensorflow as tf
 
 
 def change_hue(image, delta):
-    """ Randomly change the brightness """
-    return tf.image.random_brightness(image, max_delta)
+    """ Change hue """
+    return tf.image.adjust_hue(image, delta)
