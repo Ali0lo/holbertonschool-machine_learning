@@ -4,46 +4,35 @@ import tensorflow as tf
 
 
 def pca_color(image, alphas):
-    """Perform PCA color augmentation on an image.
-
-    This implements the color augmentation from the AlexNet paper:
-    fancy PCA over the RGB pixel values of the training set.
-    For each image, the principal components of the RGB channel
-    covariance matrix are computed, and a multiple of the found
-    principal components (scaled by their eigenvalues and random
-    alphas) is added to each pixel.
+    """Performs PCA color augmentation on an image.
 
     Args:
-        image: a 3D tf.Tensor of shape (H, W, 3) containing the
-               image to augment.
-        alphas: a tuple of length 3 containing the amount that each
-                principal color component should change.
+        image: 3D tf.Tensor containing the image to change
+        alphas: tuple of length 3 containing the amount each
+                principal component should change
 
     Returns:
-        The augmented image as a tf.Tensor with the same shape as
-        the input, clipped to [0, 255] and cast to uint8.
+        The augmented image
     """
-    pixels = tf.reshape(image, [-1, 3])
+    image = tf.cast(image, tf.float32)
 
+    pixels = tf.reshape(image, (-1, 3))
     mean = tf.reduce_mean(pixels, axis=0)
-    pixels_centered = pixels - mean
+    centered = pixels - mean
 
-    n = tf.cast(tf.shape(pixels_centered)[0], tf.float32)
-    cov = tf.matmul(
-        tf.cast(pixels_centered, tf.float32),
-        tf.cast(pixels_centered, tf.float32),
-        transpose_a=True
-    )
-    cov = cov / (n - 1.0)
+    n = tf.cast(tf.shape(centered)[0], tf.float32)
+    cov = tf.matmul(centered, centered, transpose_a=True) / (n - 1)
 
     eigenvalues, eigenvectors = tf.linalg.eigh(cov)
 
-    alphas_tensor = tf.cast(alphas, tf.float32)
-    scales = alphas_tensor * tf.sqrt(tf.abs(eigenvalues))
+    alphas = tf.cast(alphas, tf.float32)
+    delta = tf.matmul(
+        eigenvectors,
+        tf.reshape(alphas * eigenvalues, (3, 1))
+    )
+    delta = tf.reshape(delta, (1, 1, 3))
 
-    perturbation = tf.linalg.matvec(eigenvectors, scales)
+    augmented = image + delta
+    augmented = tf.clip_by_value(augmented, 0, 255)
 
-    img_augmented = tf.cast(image, tf.float32) + perturbation
-    img_augmented = tf.clip_by_value(img_augmented, 0.0, 255.0)
-
-    return tf.cast(img_augmented, tf.uint8)
+    return tf.cast(augmented, tf.uint8)
