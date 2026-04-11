@@ -15,24 +15,25 @@ def pca_color(image, alphas):
 
     Args:
         image: a 3D tf.Tensor of shape (H, W, 3) containing the
-               image to augment. Expected dtype is uint8 or float.
+               image to augment.
         alphas: a tuple of length 3 containing the amount that each
-                principal color component should change (one per
-                principal component direction).
+                principal color component should change.
 
     Returns:
         The augmented image as a tf.Tensor with the same shape as
-        the input, clipped to [0, 255] and cast back to uint8.
+        the input, clipped to [0, 255] and cast to uint8.
     """
-    img = tf.cast(image, tf.float32)
-
-    pixels = tf.reshape(img, [-1, 3])
+    pixels = tf.reshape(image, [-1, 3])
 
     mean = tf.reduce_mean(pixels, axis=0)
     pixels_centered = pixels - mean
 
     n = tf.cast(tf.shape(pixels_centered)[0], tf.float32)
-    cov = tf.matmul(pixels_centered, pixels_centered, transpose_a=True)
+    cov = tf.matmul(
+        tf.cast(pixels_centered, tf.float32),
+        tf.cast(pixels_centered, tf.float32),
+        transpose_a=True
+    )
     cov = cov / (n - 1.0)
 
     eigenvalues, eigenvectors = tf.linalg.eigh(cov)
@@ -42,7 +43,7 @@ def pca_color(image, alphas):
 
     perturbation = tf.linalg.matvec(eigenvectors, scales)
 
-    img_augmented = img + perturbation
+    img_augmented = tf.cast(image, tf.float32) + perturbation
     img_augmented = tf.clip_by_value(img_augmented, 0.0, 255.0)
 
     return tf.cast(img_augmented, tf.uint8)
