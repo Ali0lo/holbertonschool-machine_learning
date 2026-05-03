@@ -35,8 +35,8 @@ class Yolo:
         box_confidences = []
         box_class_probs = []
 
-        input_h = self.model.input.shape[1]
-        input_w = self.model.input.shape[2]
+        input_w = self.model.input.shape[1]
+        input_h = self.model.input.shape[2]
 
         image_h = image_size[0]
         image_w = image_size[1]
@@ -93,6 +93,7 @@ class Yolo:
             boxes, box_confidences, box_class_probs
         ):
             scores = confidence * class_probs
+
             classes = np.argmax(scores, axis=-1)
             class_scores = np.max(scores, axis=-1)
 
@@ -162,7 +163,7 @@ class Yolo:
         return (
             np.array(box_predictions),
             np.array(predicted_box_classes),
-            np.array(predicted_box_scores),
+            np.array(predicted_box_scores)
         )
 
     @staticmethod
@@ -173,7 +174,7 @@ class Yolo:
         images = []
         image_paths = []
 
-        for filename in os.listdir(folder_path):
+        for filename in sorted(os.listdir(folder_path)):
             path = os.path.join(folder_path, filename)
             image = cv2.imread(path)
 
@@ -187,8 +188,8 @@ class Yolo:
         """
         Preprocesses images for the Darknet model
         """
-        input_h = self.model.input.shape[1]
-        input_w = self.model.input.shape[2]
+        input_w = self.model.input.shape[1]
+        input_h = self.model.input.shape[2]
 
         pimages = []
         image_shapes = []
