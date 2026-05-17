@@ -14,12 +14,7 @@ def pca(X, ndim):
     Returns:
         np.ndarray: Transformed data of shape (n, ndim).
     """
-    cov = np.cov(X, rowvar=False)
-    eigvals, eigvecs = np.linalg.eigh(cov)
-
-    idx = np.argsort(eigvals)[::-1]
-    eigvecs = eigvecs[:, idx]
-
-    W = eigvecs[:, :ndim]
+    _, _, Vt = np.linalg.svd(X, full_matrices=False)
+    W = Vt.T[:, :ndim]
     T = np.matmul(X, W)
     return T
