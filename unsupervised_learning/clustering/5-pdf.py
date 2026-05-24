@@ -1,8 +1,10 @@
 #!/usr/bin/env python3
+"""Gaussian PDF"""
 import numpy as np
 
 
 def pdf(X, m, S):
+    """calculates PDF for a Gaussian distribution"""
 
     if not isinstance(X, np.ndarray) or len(X.shape) != 2:
         return None
@@ -15,9 +17,21 @@ def pdf(X, m, S):
 
     n, d = X.shape
 
+    if m.shape[0] != d:
+        return None
+
+    if S.shape != (d, d):
+        return None
+
     det = np.linalg.det(S)
 
-    inv = np.linalg.inv(S)
+    if det <= 0:
+        return None
+
+    try:
+        inv = np.linalg.inv(S)
+    except Exception:
+        return None
 
     norm = 1 / np.sqrt(((2 * np.pi) ** d) * det)
 
@@ -30,4 +44,6 @@ def pdf(X, m, S):
 
     P = norm * np.exp(expo)
 
-    return np.maximum(P, 1e-300)
+    P = np.maximum(P, 1e-300)
+
+    return P
