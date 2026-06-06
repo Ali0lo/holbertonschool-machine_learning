@@ -5,26 +5,35 @@ expectation_maximization = __import__('8-EM').expectation_maximization
 
 
 def BIC(X, kmin=1, kmax=None, iterations=1000, tol=1e-5, verbose=False):
-    """
-    Finds the best number of clusters for a GMM using BIC.
+    """Find the best number of clusters for a GMM using the Bayesian Information Criterion.
 
     Args:
-        X:          numpy.ndarray of shape (n, d) - the dataset
-        kmin:       minimum number of clusters to check (inclusive)
-        kmax:       maximum number of clusters to check (inclusive)
-        iterations: max iterations for the EM algorithm
-        tol:        tolerance for the EM algorithm
-        verbose:    whether EM should print info
+        X (numpy.ndarray): shape (n, d) dataset.
+        kmin (int): minimum number of clusters to check (inclusive).
+        kmax (int or None): maximum number of clusters to check (inclusive).
+            If None, set to the maximum number of clusters possible.
+        iterations (int): maximum number of iterations for the EM algorithm.
+        tol (float): tolerance for the EM algorithm.
+        verbose (bool): if True, EM prints info to standard output.
 
     Returns:
-        best_k, best_result, l, b  or  None, None, None, None on failure
+        tuple: (best_k, best_result, l, b) or (None, None, None, None) on failure.
+            best_k (int): best value for k based on BIC.
+            best_result (tuple): (pi, m, S) for the best k.
+            l (numpy.ndarray): shape (kmax - kmin + 1,) log likelihoods.
+            b (numpy.ndarray): shape (kmax - kmin + 1,) BIC values.
     """
-    if (not isinstance(X, np.ndarray) or X.ndim != 2
-            or not isinstance(kmin, int) or kmin < 1
-            or (kmax is not None and (not isinstance(kmax, int) or kmax < 1))
-            or not isinstance(iterations, int) or iterations < 1
-            or not isinstance(tol, float) or tol < 0
-            or not isinstance(verbose, bool)):
+    if not isinstance(X, np.ndarray) or X.ndim != 2:
+        return None, None, None, None
+    if not isinstance(kmin, int) or kmin < 1:
+        return None, None, None, None
+    if kmax is not None and (not isinstance(kmax, int) or kmax < 1):
+        return None, None, None, None
+    if not isinstance(iterations, int) or iterations < 1:
+        return None, None, None, None
+    if not isinstance(tol, float) or tol < 0:
+        return None, None, None, None
+    if not isinstance(verbose, bool):
         return None, None, None, None
 
     n, d = X.shape
@@ -35,30 +44,25 @@ def BIC(X, kmin=1, kmax=None, iterations=1000, tol=1e-5, verbose=False):
     if kmin >= kmax:
         return None, None, None, None
 
-    num_k = kmax - kmin + 1
-    l = np.zeros(num_k)
-    b = np.zeros(num_k)
+    l_vals = []
+    b_vals = []
     results = []
 
-    for i, k in enumerate(range(kmin, kmax + 1)):
-        pi, m, S, g, log_like = expectation_maximization(
-            X, k, iterations=iterations, tol=tol, verbose=verbose
+    for k in range(kmin, kmax + 1):
+        pi, m, S, g, log_l = expectation_maximization(
+            X, k, iterations, tol, verbose
         )
         if pi is None:
             return None, None, None, None
-
-        # Number of free parameters:
-        #   pi:  k - 1  (priors sum to 1)
-        #   m:   k * d  (means)
-        #   S:   k * d*(d+1)/2  (symmetric covariance matrices)
-        p = (k - 1) + k * d + k * d * (d + 1) // 2
-
-        l[i] = log_like
-        b[i] = p * np.log(n) - 2 * log_like
+        p = (k * d) + (k * d * (d + 1) // 2) + (k - 1)
+        bic = p * np.log(n) - 2 * log_l
+        l_vals.append(log_l)
+        b_vals.append(bic)
         results.append((pi, m, S))
 
+    l = np.array(l_vals)
+    b = np.array(b_vals)
     best_idx = np.argmin(b)
     best_k = kmin + best_idx
-    best_result = results[best_idx]
 
-    return best_k, best_result, l, b
+    return best_k, results[best_idx], l, b
