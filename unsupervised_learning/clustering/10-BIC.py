@@ -1,11 +1,11 @@
 #!/usr/bin/env python3
-"""Finds the best number of clusters for a GMM using the Bayesian Information Criterion"""
+"""Finds the best number of clusters for a GMM using BIC."""
 import numpy as np
 expectation_maximization = __import__('8-EM').expectation_maximization
 
 
 def BIC(X, kmin=1, kmax=None, iterations=1000, tol=1e-5, verbose=False):
-    """Find the best number of clusters for a GMM using the Bayesian Information Criterion.
+    """Find the best number of clusters for a GMM using BIC.
 
     Args:
         X (numpy.ndarray): shape (n, d) dataset.
@@ -17,7 +17,7 @@ def BIC(X, kmin=1, kmax=None, iterations=1000, tol=1e-5, verbose=False):
         verbose (bool): if True, EM prints info to standard output.
 
     Returns:
-        tuple: (best_k, best_result, l, b) or (None, None, None, None) on failure.
+        tuple: (best_k, best_result, l, b) or (None, None, None, None).
             best_k (int): best value for k based on BIC.
             best_result (tuple): (pi, m, S) for the best k.
             l (numpy.ndarray): shape (kmax - kmin + 1,) log likelihoods.
