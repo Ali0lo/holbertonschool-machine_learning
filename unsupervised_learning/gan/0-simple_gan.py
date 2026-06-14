@@ -1,3 +1,4 @@
+"""Simple GAN implementation using TensorFlow/Keras."""
 #!/usr/bin/env python3
 
 import tensorflow as tf
