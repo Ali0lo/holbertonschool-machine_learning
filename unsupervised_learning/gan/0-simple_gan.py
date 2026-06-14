@@ -21,6 +21,7 @@ class Simple_GAN(keras.Model):
     """
 
     def __init__(self, generator, discriminator, latent_generator,
+        super().__init__()
                  real_examples, batch_size=200, disc_iter=2,
                  learning_rate=.005):
         """Initialize the GAN."""
