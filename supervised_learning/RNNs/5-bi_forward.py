@@ -22,7 +22,7 @@ class BidirectionalCell:
         self.by = np.zeros((1, o))
 
     def forward(self, h_prev, x_t):
-        """Calculate the hidden state in the forward direction for one time step.
+        """Calculate hidden state in forward direction for one time step.
 
         Args:
             h_prev: previous hidden state, shape (m, h)
